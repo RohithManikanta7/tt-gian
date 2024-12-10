@@ -51,7 +51,7 @@
    // ==================
    
    |calc
-      @0
+      @1
          $reset = *reset;
          $val1[7:0] = >>1$out;
          $val2[7:0] = {4'b0000, *ui_in[3:0]};
@@ -70,7 +70,7 @@
                $op[0]
                   ? $val1 - $val2:
                   $val1 + $val2;
-         $digit[7:0] =  
+         *uo_out =  
             $out[3:0] == 4'h0
                ? 8'h3f:
             $out[3:0] == 4'h1
@@ -102,7 +102,6 @@
             $out[3:0] == 4'he
                ? 8'h79:
                8'h71;
-         *uo_out = $digit;
    // Note that pipesignals assigned here can be found under /fpga_pins/fpga.
    
    
