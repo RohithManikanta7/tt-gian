@@ -52,6 +52,7 @@
    
    |calc
       @0
+         $reset = *reset;
          $val1[7:0] = >>1$out;
          $val2[7:0] = {4'b0000, *ui_in[3:0]};
          $op[2:0] = *ui_in[6:4];
