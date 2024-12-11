@@ -46,22 +46,25 @@
 
 
    |calc
-      @1
+      @0
          $reset = *reset;
          $val2[7:0] = {4'b0, *ui_in[3:0]};
-         $op[1:0] = *ui_in[5:4];
+         $op[2:0] = *ui_in[6:4];
          $equals_in = *ui_in[7];
-      //@1
-         $val1[7:0] = >>1$out[7:0];
-         $sum[7:0] = $val1[7:0] + $val2[7:0];
-         $diff[7:0] = $val1[7:0] - $val2[7:0];
-         $mul[7:0] = $val1[7:0] * $val2[7:0];
-         $div[7:0] = $val1[7:0] / $val2[7:0];
-         $valid = $equals_in && !(>>1$equals_in);
+         $val1[7:0] = >>2$out[7:0];
+      @1
+         $valid = $reset ? 1'b0 : $equals_in && !(>>1$equals_in);
+         ?$valid
+            $sum[7:0] = $val1[7:0] + $val2[7:0];
+            $diff[7:0] = $val1[7:0] - $val2[7:0];
+            $mul[7:0] = $val1[7:0] * $val2[7:0];
+            $div[7:0] = $val1[7:0] / $val2[7:0];
          $out[7:0] = $reset
                         ? 8'b0 :
                      !($valid)
                         ? >>1$out[7:0] :
+                     $op[1:0] == 3'b100
+                        ? $mem:
                      $op[1:0] == 2'b00
                         ? $sum[7:0] :
                      $op[1:0] == 2'b01
@@ -69,6 +72,8 @@
                      $op[1:0] == 2'b10
                         ? $mul[7:0] :
                      $div[7:0];
+         $mem[7:0] = $op == 3'b101 ? $out : >>1$mem;
+      @2
          $digit[3:0] = $out[3:0];
          *uo_out[7:0] = $digit[3:0] == 4'b0000
              ? 8'b00111111 :
