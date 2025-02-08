@@ -2,7 +2,6 @@
 \m5
    use(m5-1.0)
 
-
    // #################################################################
    // #                                                               #
    // #  Starting-Point Code for MEST Course Tiny Tapeout Calculator  #
